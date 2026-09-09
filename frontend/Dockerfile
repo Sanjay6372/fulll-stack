@@ -2,16 +2,12 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-ENV NODE_ENV=production
+COPY package*.json ./
 
-COPY --from=builder /app/package*.json ./
+RUN npm install
 
-RUN npm install --omit=dev
-
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/app ./app
-COPY --from=builder /app/next.config.js ./
+COPY . .
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
